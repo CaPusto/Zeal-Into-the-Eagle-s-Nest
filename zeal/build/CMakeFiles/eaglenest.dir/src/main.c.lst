@@ -1,0 +1,162 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	.optsdcc -mz80
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _main
+                                     12 	.globl _render_title_screen
+                                     13 	.globl _assets_load_title
+                                     14 	.globl _gfx_wait_vblank
+                                     15 	.globl _gfx_enable_screen
+                                     16 	.globl _gfx_initialize
+                                     17 ;--------------------------------------------------------
+                                     18 ; special function registers
+                                     19 ;--------------------------------------------------------
+                           000080    20 _zvb_config_ver_rev	=	0x0080
+                           000081    21 _zvb_config_ver_min	=	0x0081
+                           000082    22 _zvb_config_ver_maj	=	0x0082
+                           00008E    23 _zvb_config_dev_idx	=	0x008e
+                           00008F    24 _zvb_config_phys_addr	=	0x008f
+                           000090    25 _zvb_ctrl_vpos_low	=	0x0090
+                           000091    26 _zvb_ctrl_vpos_high	=	0x0091
+                           000092    27 _zvb_ctrl_hpos_low	=	0x0092
+                           000093    28 _zvb_ctrl_hpos_high	=	0x0093
+                           000094    29 _zvb_ctrl_l0_scr_y_low	=	0x0094
+                           000095    30 _zvb_ctrl_l0_scr_y_high	=	0x0095
+                           000096    31 _zvb_ctrl_l0_scr_x_low	=	0x0096
+                           000097    32 _zvb_ctrl_l0_scr_x_high	=	0x0097
+                           000098    33 _zvb_ctrl_l1_scr_y_low	=	0x0098
+                           000099    34 _zvb_ctrl_l1_scr_y_high	=	0x0099
+                           00009A    35 _zvb_ctrl_l1_scr_x_low	=	0x009a
+                           00009B    36 _zvb_ctrl_l1_scr_x_high	=	0x009b
+                           00009C    37 _zvb_ctrl_video_mode	=	0x009c
+                           00009D    38 _zvb_ctrl_status	=	0x009d
+                           0000A0    39 _zvb_peri_text_print_char	=	0x00a0
+                           0000A1    40 _zvb_peri_text_curs_y	=	0x00a1
+                           0000A2    41 _zvb_peri_text_curs_x	=	0x00a2
+                           0000A3    42 _zvb_peri_text_scroll_y	=	0x00a3
+                           0000A4    43 _zvb_peri_text_scroll_x	=	0x00a4
+                           0000A5    44 _zvb_peri_text_color	=	0x00a5
+                           0000A6    45 _zvb_peri_text_curs_time	=	0x00a6
+                           0000A7    46 _zvb_peri_text_curs_char	=	0x00a7
+                           0000A8    47 _zvb_peri_text_curs_color	=	0x00a8
+                           0000A9    48 _zvb_peri_text_ctrl	=	0x00a9
+                           0000A1    49 _zvb_peri_spi_ctrl	=	0x00a1
+                           0000A2    50 _zvb_peri_spi_clk_div	=	0x00a2
+                           0000A3    51 _zvb_peri_spi_ram_len	=	0x00a3
+                           0000A7    52 _zvb_peri_spi_fifo	=	0x00a7
+                           0000A8    53 _zvb_peri_spi_array_0	=	0x00a8
+                           0000A9    54 _zvb_peri_spi_array_1	=	0x00a9
+                           0000AA    55 _zvb_peri_spi_array_2	=	0x00aa
+                           0000AB    56 _zvb_peri_spi_array_3	=	0x00ab
+                           0000AC    57 _zvb_peri_spi_array_4	=	0x00ac
+                           0000AD    58 _zvb_peri_spi_array_5	=	0x00ad
+                           0000AE    59 _zvb_peri_spi_array_6	=	0x00ae
+                           0000AF    60 _zvb_peri_spi_array_7	=	0x00af
+                           0000A0    61 _zvb_peri_crc_ctrl	=	0x00a0
+                           0000A1    62 _zvb_peri_crc_data_in	=	0x00a1
+                           0000A4    63 _zvb_peri_crc_byte0	=	0x00a4
+                           0000A5    64 _zvb_peri_crc_byte1	=	0x00a5
+                           0000A6    65 _zvb_peri_crc_byte2	=	0x00a6
+                           0000A7    66 _zvb_peri_crc_byte3	=	0x00a7
+                           0000A0    67 _zvb_peri_sound_freq_low	=	0x00a0
+                           0000A1    68 _zvb_peri_sound_freq_high	=	0x00a1
+                           0000A2    69 _zvb_peri_sound_wave	=	0x00a2
+                           0000A3    70 _zvb_peri_sound_volume	=	0x00a3
+                           0000A0    71 _zvb_peri_sound_sample_fifo	=	0x00a0
+                           0000A1    72 _zvb_peri_sound_sample_div	=	0x00a1
+                           0000A2    73 _zvb_peri_sound_sample_conf	=	0x00a2
+                           0000AB    74 _zvb_peri_sound_left_channel	=	0x00ab
+                           0000AC    75 _zvb_peri_sound_right_channel	=	0x00ac
+                           0000AD    76 _zvb_peri_sound_hold	=	0x00ad
+                           0000AE    77 _zvb_peri_sound_master_vol	=	0x00ae
+                           0000AF    78 _zvb_peri_sound_select	=	0x00af
+                           0000A0    79 _zvb_peri_dma_ctrl	=	0x00a0
+                           0000A1    80 _zvb_peri_dma_addr0	=	0x00a1
+                           0000A2    81 _zvb_peri_dma_addr1	=	0x00a2
+                           0000A3    82 _zvb_peri_dma_addr2	=	0x00a3
+                           0000A9    83 _zvb_peri_dma_clk_div	=	0x00a9
+                                     84 ;--------------------------------------------------------
+                                     85 ; ram data
+                                     86 ;--------------------------------------------------------
+                                     87 	.area _DATA
+                                     88 ;--------------------------------------------------------
+                                     89 ; ram data
+                                     90 ;--------------------------------------------------------
+                                     91 	.area _INITIALIZED
+                                     92 ;--------------------------------------------------------
+                                     93 ; absolute external ram data
+                                     94 ;--------------------------------------------------------
+                                     95 	.area _DABS (ABS)
+                                     96 ;--------------------------------------------------------
+                                     97 ; global & static initialisations
+                                     98 ;--------------------------------------------------------
+                                     99 	.area _HOME
+                                    100 	.area _GSINIT
+                                    101 	.area _GSFINAL
+                                    102 	.area _GSINIT
+                                    103 ;--------------------------------------------------------
+                                    104 ; Home
+                                    105 ;--------------------------------------------------------
+                                    106 	.area _HOME
+                                    107 	.area _HOME
+                                    108 ;--------------------------------------------------------
+                                    109 ; code
+                                    110 ;--------------------------------------------------------
+                                    111 	.area _TEXT
+                                    112 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:7: int main(void) {
+                                    113 ;	---------------------------------
+                                    114 ; Function main
+                                    115 ; ---------------------------------
+      000000                        116 _main::
+      000000 DD E5            [15]  117 	push	ix
+      000002 DD 21 00 00      [14]  118 	ld	ix,#0
+      000006 DD 39            [15]  119 	add	ix,sp
+      000008 21 FB FF         [10]  120 	ld	hl, #-5
+      00000B 39               [11]  121 	add	hl, sp
+      00000C F9               [ 6]  122 	ld	sp, hl
+                                    123 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:11: gfx_enable_screen(0);
+      00000D AF               [ 4]  124 	xor	a, a
+      00000E CDr00r00         [17]  125 	call	_gfx_enable_screen
+                                    126 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:14: gfx_initialize(ZVB_CTRL_VID_MODE_GFX_320_4BIT, &ctx);
+      000011 21 00 00         [10]  127 	ld	hl, #0
+      000014 39               [11]  128 	add	hl, sp
+      000015 EB               [ 4]  129 	ex	de, hl
+      000016 3E 07            [ 7]  130 	ld	a, #0x07
+      000018 CDr00r00         [17]  131 	call	_gfx_initialize
+                                    132 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:17: if (assets_load_title() != 0) {
+      00001B CDr00r00         [17]  133 	call	_assets_load_title
+      00001E B7               [ 4]  134 	or	a, a
+      00001F 28 05            [12]  135 	jr	Z, 00102$
+                                    136 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:18: return 1;
+      000021 11 01 00         [10]  137 	ld	de, #0x0001
+      000024 18 15            [12]  138 	jr	00106$
+      000026                        139 00102$:
+                                    140 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:22: render_title_screen(&ctx);
+      000026 21 00 00         [10]  141 	ld	hl, #0
+      000029 39               [11]  142 	add	hl, sp
+      00002A CDr00r00         [17]  143 	call	_render_title_screen
+                                    144 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:25: gfx_enable_screen(1);
+      00002D 3E 01            [ 7]  145 	ld	a, #0x01
+      00002F CDr00r00         [17]  146 	call	_gfx_enable_screen
+                                    147 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:28: while (1) {
+      000032                        148 00104$:
+                                    149 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:29: gfx_wait_vblank(&ctx);
+      000032 21 00 00         [10]  150 	ld	hl, #0
+      000035 39               [11]  151 	add	hl, sp
+      000036 CDr00r00         [17]  152 	call	_gfx_wait_vblank
+      000039 18 F7            [12]  153 	jr	00104$
+                                    154 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:32: return 0;
+      00003B                        155 00106$:
+                                    156 ;/home/ed/work/zeal-eaglenest/zeal/src/main.c:33: }
+      00003B DD F9            [10]  157 	ld	sp, ix
+      00003D DD E1            [14]  158 	pop	ix
+      00003F C9               [10]  159 	ret
+                                    160 	.area _TEXT
+                                    161 	.area _INITIALIZER
+                                    162 	.area _CABS (ABS)

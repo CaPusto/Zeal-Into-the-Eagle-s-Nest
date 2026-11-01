@@ -1,0 +1,97 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:200 (message)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      The target system is: ZOS -  - Z80
+      The host system is: Linux - 6.12.0-211.69.1.el10_2.x86_64 - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /home/ed/work/tools/sdcc-4.4.0/bin/sdcc 
+      Build flags: -mz80;-I/home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/include/;--codeseg;TEXT
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.asm"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.ihx"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.lk"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.lst"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.map"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.noi"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.rel"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.sym"
+      
+      The C compiler identification is SDCC, found in:
+        /home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/3.31.6/CompilerIdC/CMakeCCompilerId.asm
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:16 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/CMakeScratch/TryCompile-ViJKj0"
+      binary: "/home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/CMakeScratch/TryCompile-ViJKj0"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-mz80 -I/home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/include/ --codeseg TEXT"
+      CMAKE_C_FLAGS_DEBUG: ""
+      CMAKE_EXE_LINKER_FLAGS: "-n -b _HEADER=0x4000 -i -m -w -k /home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/lib -l z80"
+      CMAKE_MODULE_PATH: "/home/ed/work/sdk/Zeal-8-bit-OS/cmake/Modules;/home/ed/work/sdk/Zeal-8-bit-OS/cmake/Modules"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/CMakeScratch/TryCompile-ViJKj0'
+        
+        Run Build Command(s): /home/ed/work/tools/cmake-3.31.6-linux-x86_64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_77ab9/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_77ab9.dir/build.make CMakeFiles/cmTC_77ab9.dir/build
+        gmake[1]: Entering directory '/home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/CMakeScratch/TryCompile-ViJKj0'
+        Building C object CMakeFiles/cmTC_77ab9.dir/CMakeCCompilerABI.c.rel
+        /home/ed/work/tools/sdcc-4.4.0/bin/sdcc   -mz80 -I/home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/include/ --codeseg TEXT  -o CMakeFiles/cmTC_77ab9.dir/CMakeCCompilerABI.c.rel -c /home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeCCompilerABI.c
+        Linking C executable cmTC_77ab9.ihx
+        /home/ed/work/tools/cmake-3.31.6-linux-x86_64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_77ab9.dir/link.txt --verbose=1
+        /home/ed/work/tools/sdcc-4.4.0/bin/sdldz80 -n -b _HEADER=0x4000 -i -m -w -k /home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/lib -l z80  cmTC_77ab9.ihx /home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/bin/zos_crt0.rel CMakeFiles/cmTC_77ab9.dir/CMakeCCompilerABI.c.rel
+        gmake[1]: Leaving directory '/home/ed/work/zeal-eaglenest/zeal/build/CMakeFiles/CMakeScratch/TryCompile-ViJKj0'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/home/ed/work/tools/cmake-3.31.6-linux-x86_64/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:16 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+...

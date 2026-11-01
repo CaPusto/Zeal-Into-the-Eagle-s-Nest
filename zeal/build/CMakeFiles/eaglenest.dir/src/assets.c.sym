@@ -1,0 +1,49 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 1
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  002710 L
+    .__.ABS.                                                    =  000000 G
+    .__.CPU.                                                    =  000000 L
+    .__.H$L.                                                    =  000000 L
+  7 ___str_0                                                       0002CB R
+  7 ___str_1                                                       0002D0 R
+  7 ___str_2                                                       000305 R
+  7 ___str_3                                                       00030F R
+  7 ___str_4                                                       000319 R
+  1 _asset_buf                                                     000018 R
+  7 _asset_load                                                    0000C6 R
+  7 _asset_load_pair                                               000293 R
+  7 _asset_map_off                                                 0000A4 GR
+  7 _asset_map_page                                                00006E GR
+  7 _asset_prep                                                    000005 R
+  7 _assets_load_title                                             0002D8 GR
+    _close                                                         ****** GX
+    _dstat                                                         ****** GX
+  7 _kernel_config                                                 000000 R
+    _open                                                          ****** GX
+    _palloc                                                        ****** GX
+    _pmap                                                          ****** GX
+    _read                                                          ****** GX
+  1 _title_map                                                     000008 GR
+  1 _title_palette                                                 000010 GR
+  1 _title_tiles                                                   000000 GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 2
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE                                      size      0   flags    0
+   1 _DATA                                      size     48   flags    0
+   2 _INITIALIZED                               size      0   flags    0
+   3 _DABS                                      size      0   flags    8
+   4 _HOME                                      size      0   flags    0
+   5 _GSINIT                                    size      0   flags    0
+   6 _GSFINAL                                   size      0   flags    0
+   7 _TEXT                                      size    323   flags    0
+   8 _INITIALIZER                               size      0   flags    0
+   9 _CABS                                      size      0   flags    8
+

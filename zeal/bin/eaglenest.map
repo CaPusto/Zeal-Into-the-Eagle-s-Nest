@@ -1,0 +1,203 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           load_rle
+     00000000  l__BSEG                         
+     00000000  l__CABS                         
+     00000000  l__CODE                         
+     00000000  l__DABS                         
+     00000000  l__HEAP                         
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  l__RODATA                       
+     00000000  s__CABS                         
+     00000000  s__CODE                         
+     00000000  s__DABS                         
+     00000001  l__GSFINAL                      
+     00000020  l__HEADER                       
+     00000030  l__GSINIT                       
+     00000048  l__DATA                         
+     000000A3  l__BSS                          
+     00000173  l__SYSTEM                       
+     00001301  l__TEXT                         
+     00004000  s__HEADER                       
+     00004020  s__GSINIT                       
+     00004050  s__GSFINAL                      
+     00004051  s__HOME                         
+     00004051  s__INITIALIZER                  
+     00004051  s__SYSTEM                       
+     000041C4  s__TEXT                         
+     000054C5  s__BSEG                         
+     000054C5  s__BSS                          
+     000054C5  s__INITIALIZED                  
+     000054C5  s__RODATA                       
+     00005568  s__DATA                         
+     000055B0  s__HEAP                         
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER                             00004000    00000020 =          32. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSINIT                             00004020    00000030 =          48. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSFINAL                            00004050    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_SYSTEM                             00004051    00000173 =         371. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004051  _read                              crt0
+     00004062  _write                             crt0
+     00004073  _open                              crt0
+     0000407C  _close                             crt0
+     00004081  _dstat                             crt0
+     00004086  _stat                              crt0
+     0000408C  _seek                              crt0
+     000040AA  _ioctl                             crt0
+     000040B3  _mkdir                             crt0
+     000040B8  _chdir                             crt0
+     000040BD  _curdir                            crt0
+     000040C2  _opendir                           crt0
+     000040C7  _readdir                           crt0
+     000040CC  _rm                                crt0
+     000040D1  _mount                             crt0
+     000040DC  _exit                              crt0
+     000040E1  _exec                              crt0
+     00004105  _dup                               crt0
+     0000410B  _msleep                            crt0
+     00004110  _settime                           crt0
+     00004119  _gettime                           crt0
+     00004127  _setdate                           crt0
+     0000412C  _getdate                           crt0
+     00004131  _map                               crt0
+     0000413A  _swap                              crt0
+     00004140  _palloc                            crt0
+     00004147  _pfree                             crt0
+     0000414C  _pmap                              crt0
+     0000415B  _getchar                           crt0
+     00004187  _putchar                           crt0
+     000041B8  _fflush_stdout                     crt0
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_TEXT                               000041C4    00001301 =        4865. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000041C4  _main                              main
+     00004204  _render_title_screen               render
+     0000442A  _asset_map_page                    assets
+     00004460  _asset_map_off                     assets
+     00004694  _assets_load_title                 assets
+     000046F1  _memset_vram                       core
+     000046FF  _gfx_initialize                    core
+     00004780  _gfx_enable_screen                 core
+     00004789  _gfx_wait_vblank                   core
+     00004791  _gfx_wait_end_vblank               core
+     000047AB  _gfx_tilemap_load                  load
+     00004847  _gfx_palette_load                  palette
+     000048BD  _gfx_tileset_load                  load
+     00004ACE  _gfx_tileset_load_lz               load_lz
+     00004D30  _gfx_tileset_load_1bit             load_1bit
+     00004F90  _gfx_tileset_load_none             load_none
+     000050AF  _gfx_tileset_load_2bit             load_2bit
+     0000524A  _gfx_tileset_load_4bit             load_4bit
+     0000535D  _gfx_tileset_load_rle              load_rle
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_BSS                                000054C5    000000A3 =         163. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               00005568    00000048 =          72. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00005568  _title_tiles                       assets
+     00005570  _title_map                         assets
+     00005578  _title_palette                     assets
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+
+Files Linked                              [ module(s) ]
+
+/home/ed/work/sdk/Zeal-8-bit-OS/sdk/sdcc/bin/zos_crt0.rel
+                                          [ crt0 ]
+CMakeFiles/eaglenest.dir/src/main.c.rel   [ main ]
+CMakeFiles/eaglenest.dir/src/render.c.rel
+                                          [ render ]
+CMakeFiles/eaglenest.dir/src/assets.c.rel
+                                          [ assets ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ core.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ palette.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_lz.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_1bit.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_none.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_2bit.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_4bit.c.rel ]
+/home/ed/work/sdk/Zeal-VideoBoard-SDK/cmake/../lib/zvb_gfx.lib
+                                          [ load_rle.c.rel ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+
+User Base Address Definitions
+
+_HEADER=0x4000
+
+

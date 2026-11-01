@@ -1,0 +1,11 @@
+-mjwx
+-i CMakeCCompilerId.ihx
+-b _CODE = 0x0200
+-b _DATA = 0x8000
+-k /home/ed/work/tools/sdcc-4.4.0/bin/../share/sdcc/lib/z80
+-k /usr/local/share/sdcc/lib/z80
+-l z80
+/home/ed/work/tools/sdcc-4.4.0/bin/../share/sdcc/lib/z80/crt0.rel
+CMakeCCompilerId.rel
+
+-e

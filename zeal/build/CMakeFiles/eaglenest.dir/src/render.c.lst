@@ -1,0 +1,391 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module render
+                                      6 	.optsdcc -mz80
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _asset_map_off
+                                     12 	.globl _asset_map_page
+                                     13 	.globl _gfx_tilemap_load
+                                     14 	.globl _gfx_tileset_load
+                                     15 	.globl _gfx_palette_load
+                                     16 	.globl _render_title_screen
+                                     17 ;--------------------------------------------------------
+                                     18 ; special function registers
+                                     19 ;--------------------------------------------------------
+                           000080    20 _zvb_config_ver_rev	=	0x0080
+                           000081    21 _zvb_config_ver_min	=	0x0081
+                           000082    22 _zvb_config_ver_maj	=	0x0082
+                           00008E    23 _zvb_config_dev_idx	=	0x008e
+                           00008F    24 _zvb_config_phys_addr	=	0x008f
+                           000090    25 _zvb_ctrl_vpos_low	=	0x0090
+                           000091    26 _zvb_ctrl_vpos_high	=	0x0091
+                           000092    27 _zvb_ctrl_hpos_low	=	0x0092
+                           000093    28 _zvb_ctrl_hpos_high	=	0x0093
+                           000094    29 _zvb_ctrl_l0_scr_y_low	=	0x0094
+                           000095    30 _zvb_ctrl_l0_scr_y_high	=	0x0095
+                           000096    31 _zvb_ctrl_l0_scr_x_low	=	0x0096
+                           000097    32 _zvb_ctrl_l0_scr_x_high	=	0x0097
+                           000098    33 _zvb_ctrl_l1_scr_y_low	=	0x0098
+                           000099    34 _zvb_ctrl_l1_scr_y_high	=	0x0099
+                           00009A    35 _zvb_ctrl_l1_scr_x_low	=	0x009a
+                           00009B    36 _zvb_ctrl_l1_scr_x_high	=	0x009b
+                           00009C    37 _zvb_ctrl_video_mode	=	0x009c
+                           00009D    38 _zvb_ctrl_status	=	0x009d
+                           0000A0    39 _zvb_peri_text_print_char	=	0x00a0
+                           0000A1    40 _zvb_peri_text_curs_y	=	0x00a1
+                           0000A2    41 _zvb_peri_text_curs_x	=	0x00a2
+                           0000A3    42 _zvb_peri_text_scroll_y	=	0x00a3
+                           0000A4    43 _zvb_peri_text_scroll_x	=	0x00a4
+                           0000A5    44 _zvb_peri_text_color	=	0x00a5
+                           0000A6    45 _zvb_peri_text_curs_time	=	0x00a6
+                           0000A7    46 _zvb_peri_text_curs_char	=	0x00a7
+                           0000A8    47 _zvb_peri_text_curs_color	=	0x00a8
+                           0000A9    48 _zvb_peri_text_ctrl	=	0x00a9
+                           0000A1    49 _zvb_peri_spi_ctrl	=	0x00a1
+                           0000A2    50 _zvb_peri_spi_clk_div	=	0x00a2
+                           0000A3    51 _zvb_peri_spi_ram_len	=	0x00a3
+                           0000A7    52 _zvb_peri_spi_fifo	=	0x00a7
+                           0000A8    53 _zvb_peri_spi_array_0	=	0x00a8
+                           0000A9    54 _zvb_peri_spi_array_1	=	0x00a9
+                           0000AA    55 _zvb_peri_spi_array_2	=	0x00aa
+                           0000AB    56 _zvb_peri_spi_array_3	=	0x00ab
+                           0000AC    57 _zvb_peri_spi_array_4	=	0x00ac
+                           0000AD    58 _zvb_peri_spi_array_5	=	0x00ad
+                           0000AE    59 _zvb_peri_spi_array_6	=	0x00ae
+                           0000AF    60 _zvb_peri_spi_array_7	=	0x00af
+                           0000A0    61 _zvb_peri_crc_ctrl	=	0x00a0
+                           0000A1    62 _zvb_peri_crc_data_in	=	0x00a1
+                           0000A4    63 _zvb_peri_crc_byte0	=	0x00a4
+                           0000A5    64 _zvb_peri_crc_byte1	=	0x00a5
+                           0000A6    65 _zvb_peri_crc_byte2	=	0x00a6
+                           0000A7    66 _zvb_peri_crc_byte3	=	0x00a7
+                           0000A0    67 _zvb_peri_sound_freq_low	=	0x00a0
+                           0000A1    68 _zvb_peri_sound_freq_high	=	0x00a1
+                           0000A2    69 _zvb_peri_sound_wave	=	0x00a2
+                           0000A3    70 _zvb_peri_sound_volume	=	0x00a3
+                           0000A0    71 _zvb_peri_sound_sample_fifo	=	0x00a0
+                           0000A1    72 _zvb_peri_sound_sample_div	=	0x00a1
+                           0000A2    73 _zvb_peri_sound_sample_conf	=	0x00a2
+                           0000AB    74 _zvb_peri_sound_left_channel	=	0x00ab
+                           0000AC    75 _zvb_peri_sound_right_channel	=	0x00ac
+                           0000AD    76 _zvb_peri_sound_hold	=	0x00ad
+                           0000AE    77 _zvb_peri_sound_master_vol	=	0x00ae
+                           0000AF    78 _zvb_peri_sound_select	=	0x00af
+                           0000A0    79 _zvb_peri_dma_ctrl	=	0x00a0
+                           0000A1    80 _zvb_peri_dma_addr0	=	0x00a1
+                           0000A2    81 _zvb_peri_dma_addr1	=	0x00a2
+                           0000A3    82 _zvb_peri_dma_addr2	=	0x00a3
+                           0000A9    83 _zvb_peri_dma_clk_div	=	0x00a9
+                                     84 ;--------------------------------------------------------
+                                     85 ; ram data
+                                     86 ;--------------------------------------------------------
+                                     87 	.area _DATA
+                                     88 ;--------------------------------------------------------
+                                     89 ; ram data
+                                     90 ;--------------------------------------------------------
+                                     91 	.area _INITIALIZED
+                                     92 ;--------------------------------------------------------
+                                     93 ; absolute external ram data
+                                     94 ;--------------------------------------------------------
+                                     95 	.area _DABS (ABS)
+                                     96 ;--------------------------------------------------------
+                                     97 ; global & static initialisations
+                                     98 ;--------------------------------------------------------
+                                     99 	.area _HOME
+                                    100 	.area _GSINIT
+                                    101 	.area _GSFINAL
+                                    102 	.area _GSINIT
+                                    103 ;--------------------------------------------------------
+                                    104 ; Home
+                                    105 ;--------------------------------------------------------
+                                    106 	.area _HOME
+                                    107 	.area _HOME
+                                    108 ;--------------------------------------------------------
+                                    109 ; code
+                                    110 ;--------------------------------------------------------
+                                    111 	.area _TEXT
+                                    112 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:6: void render_title_screen(gfx_context* ctx) {
+                                    113 ;	---------------------------------
+                                    114 ; Function render_title_screen
+                                    115 ; ---------------------------------
+      000000                        116 _render_title_screen::
+      000000 DD E5            [15]  117 	push	ix
+      000002 DD 21 00 00      [14]  118 	ld	ix,#0
+      000006 DD 39            [15]  119 	add	ix,sp
+      000008 FD 21 DF FF      [14]  120 	ld	iy, #-33
+      00000C FD 39            [15]  121 	add	iy, sp
+      00000E FD F9            [10]  122 	ld	sp, iy
+      000010 DD 75 FE         [19]  123 	ld	-2 (ix), l
+      000013 DD 74 FF         [19]  124 	ld	-1 (ix), h
+                                    125 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:12: data = (uint8_t*)asset_map_off(&title_palette, 0);
+      000016 11 00 00         [10]  126 	ld	de, #0x0000
+      000019 21r00r00         [10]  127 	ld	hl, #_title_palette
+      00001C CDr00r00         [17]  128 	call	_asset_map_off
+      00001F DD 73 FC         [19]  129 	ld	-4 (ix), e
+                                    130 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:13: if (data) {
+      000022 DD 72 FD         [19]  131 	ld	-3 (ix), d
+      000025 7A               [ 4]  132 	ld	a, d
+      000026 DD B6 FC         [19]  133 	or	a, -4 (ix)
+      000029 28 45            [12]  134 	jr	Z, 00104$
+                                    135 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:14: const size_t palette_size = title_palette.size;
+      00002B 21r06r00         [10]  136 	ld	hl, #_title_palette + 6
+      00002E 7E               [ 7]  137 	ld	a, (hl)
+      00002F DD 77 FA         [19]  138 	ld	-6 (ix), a
+      000032 23               [ 6]  139 	inc	hl
+      000033 7E               [ 7]  140 	ld	a, (hl)
+      000034 DD 77 FB         [19]  141 	ld	-5 (ix), a
+      000037 DD 7E FA         [19]  142 	ld	a, -6 (ix)
+      00003A DD 77 DF         [19]  143 	ld	-33 (ix), a
+      00003D DD 7E FB         [19]  144 	ld	a, -5 (ix)
+      000040 DD 77 E0         [19]  145 	ld	-32 (ix), a
+      000043 DD 7E DF         [19]  146 	ld	a, -33 (ix)
+      000046 DD 77 FA         [19]  147 	ld	-6 (ix), a
+      000049 DD 7E E0         [19]  148 	ld	a, -32 (ix)
+      00004C DD 77 FB         [19]  149 	ld	-5 (ix), a
+                                    150 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:15: if (palette_size > 0) {
+      00004F DD 7E E0         [19]  151 	ld	a, -32 (ix)
+      000052 DD B6 DF         [19]  152 	or	a, -33 (ix)
+      000055 28 19            [12]  153 	jr	Z, 00104$
+                                    154 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:16: gfx_palette_load(ctx, data, palette_size, 0);
+      000057 AF               [ 4]  155 	xor	a, a
+      000058 F5               [11]  156 	push	af
+      000059 33               [ 6]  157 	inc	sp
+      00005A DD 6E FA         [19]  158 	ld	l, -6 (ix)
+                                    159 ;	spillPairReg hl
+                                    160 ;	spillPairReg hl
+      00005D DD 66 FB         [19]  161 	ld	h, -5 (ix)
+                                    162 ;	spillPairReg hl
+                                    163 ;	spillPairReg hl
+      000060 E5               [11]  164 	push	hl
+      000061 DD 5E FC         [19]  165 	ld	e, -4 (ix)
+      000064 DD 56 FD         [19]  166 	ld	d, -3 (ix)
+      000067 DD 6E FE         [19]  167 	ld	l, -2 (ix)
+                                    168 ;	spillPairReg hl
+                                    169 ;	spillPairReg hl
+      00006A DD 66 FF         [19]  170 	ld	h, -1 (ix)
+                                    171 ;	spillPairReg hl
+                                    172 ;	spillPairReg hl
+      00006D CDr00r00         [17]  173 	call	_gfx_palette_load
+      000070                        174 00104$:
+                                    175 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:21: opts.compression = 0;  /* TILESET_COMP_NONE */
+      000070 DD 36 F5 00      [19]  176 	ld	-11 (ix), #0x00
+                                    177 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:22: opts.from_byte = 0;
+      000074 AF               [ 4]  178 	xor	a, a
+      000075 DD 77 F6         [19]  179 	ld	-10 (ix), a
+      000078 DD 77 F7         [19]  180 	ld	-9 (ix), a
+                                    181 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:23: opts.pal_offset = 0;
+      00007B DD 36 F8 00      [19]  182 	ld	-8 (ix), #0x00
+                                    183 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:24: opts.opacity = 0;
+      00007F DD 36 F9 00      [19]  184 	ld	-7 (ix), #0x00
+                                    185 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:26: data = (uint8_t*)asset_map_page(&title_tiles, 0);
+      000083 AF               [ 4]  186 	xor	a, a
+      000084 F5               [11]  187 	push	af
+      000085 33               [ 6]  188 	inc	sp
+      000086 21r00r00         [10]  189 	ld	hl, #_title_tiles
+      000089 CDr00r00         [17]  190 	call	_asset_map_page
+      00008C DD 73 FC         [19]  191 	ld	-4 (ix), e
+                                    192 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:27: if (data && title_tiles.size > 0) {
+      00008F DD 72 FD         [19]  193 	ld	-3 (ix), d
+      000092 7A               [ 4]  194 	ld	a, d
+      000093 DD B6 FC         [19]  195 	or	a, -4 (ix)
+      000096 28 3F            [12]  196 	jr	Z, 00106$
+      000098 21r06r00         [10]  197 	ld	hl, #_title_tiles + 6
+      00009B 7E               [ 7]  198 	ld	a, (hl)
+      00009C DD 77 FA         [19]  199 	ld	-6 (ix), a
+      00009F 23               [ 6]  200 	inc	hl
+      0000A0 7E               [ 7]  201 	ld	a, (hl)
+      0000A1 DD 77 FB         [19]  202 	ld	-5 (ix), a
+      0000A4 DD B6 FA         [19]  203 	or	a, -6 (ix)
+      0000A7 28 2E            [12]  204 	jr	Z, 00106$
+                                    205 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:30: &opts);
+                                    206 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:29: title_tiles.size > 32768 ? 32768 : title_tiles.size,
+      0000A9 AF               [ 4]  207 	xor	a, a
+      0000AA DD BE FA         [19]  208 	cp	a, -6 (ix)
+      0000AD 3E 80            [ 7]  209 	ld	a, #0x80
+      0000AF DD 9E FB         [19]  210 	sbc	a, -5 (ix)
+      0000B2 30 08            [12]  211 	jr	NC, 00123$
+      0000B4 DD 36 FA 00      [19]  212 	ld	-6 (ix), #0x00
+      0000B8 DD 36 FB 80      [19]  213 	ld	-5 (ix), #0x80
+      0000BC                        214 00123$:
+                                    215 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:28: gfx_tileset_load(ctx, data, 
+      0000BC 21 16 00         [10]  216 	ld	hl, #22
+      0000BF 39               [11]  217 	add	hl, sp
+      0000C0 E5               [11]  218 	push	hl
+      0000C1 DD 6E FA         [19]  219 	ld	l, -6 (ix)
+                                    220 ;	spillPairReg hl
+                                    221 ;	spillPairReg hl
+      0000C4 DD 66 FB         [19]  222 	ld	h, -5 (ix)
+                                    223 ;	spillPairReg hl
+                                    224 ;	spillPairReg hl
+      0000C7 E5               [11]  225 	push	hl
+      0000C8 DD 5E FC         [19]  226 	ld	e, -4 (ix)
+      0000CB DD 56 FD         [19]  227 	ld	d, -3 (ix)
+      0000CE DD 6E FE         [19]  228 	ld	l, -2 (ix)
+                                    229 ;	spillPairReg hl
+                                    230 ;	spillPairReg hl
+      0000D1 DD 66 FF         [19]  231 	ld	h, -1 (ix)
+                                    232 ;	spillPairReg hl
+                                    233 ;	spillPairReg hl
+      0000D4 CDr00r00         [17]  234 	call	_gfx_tileset_load
+      0000D7                        235 00106$:
+                                    236 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:37: data = (uint8_t*)asset_map_page(&title_map, 0);
+      0000D7 AF               [ 4]  237 	xor	a, a
+      0000D8 F5               [11]  238 	push	af
+      0000D9 33               [ 6]  239 	inc	sp
+      0000DA 21r00r00         [10]  240 	ld	hl, #_title_map
+      0000DD CDr00r00         [17]  241 	call	_asset_map_page
+      0000E0 DD 73 FC         [19]  242 	ld	-4 (ix), e
+      0000E3 DD 72 FD         [19]  243 	ld	-3 (ix), d
+      0000E6 DD 7E FC         [19]  244 	ld	a, -4 (ix)
+      0000E9 DD 77 FA         [19]  245 	ld	-6 (ix), a
+      0000EC DD 7E FD         [19]  246 	ld	a, -3 (ix)
+                                    247 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:38: if (data) {
+      0000EF DD 77 FB         [19]  248 	ld	-5 (ix), a
+      0000F2 DD B6 FA         [19]  249 	or	a, -6 (ix)
+      0000F5 CAr7Er01         [10]  250 	jp	Z, 00111$
+                                    251 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:40: for (y = 0; y < 12 && y * 20 < title_map.size; y++) {
+      0000F8 06 00            [ 7]  252 	ld	b, #0x00
+      0000FA                        253 00115$:
+      0000FA 78               [ 4]  254 	ld	a, b
+      0000FB D6 0C            [ 7]  255 	sub	a, #0x0c
+      0000FD 30 4E            [12]  256 	jr	NC, 00108$
+      0000FF 58               [ 4]  257 	ld	e, b
+      000100 16 00            [ 7]  258 	ld	d, #0x00
+      000102 6B               [ 4]  259 	ld	l, e
+      000103 62               [ 4]  260 	ld	h, d
+      000104 29               [11]  261 	add	hl, hl
+      000105 29               [11]  262 	add	hl, hl
+      000106 19               [11]  263 	add	hl, de
+      000107 29               [11]  264 	add	hl, hl
+      000108 29               [11]  265 	add	hl, hl
+      000109 EB               [ 4]  266 	ex	de, hl
+      00010A 2Ar06r00         [16]  267 	ld	hl, (#_title_map + 6)
+      00010D DD 73 FC         [19]  268 	ld	-4 (ix), e
+      000110 DD 72 FD         [19]  269 	ld	-3 (ix), d
+      000113 DD 7E FC         [19]  270 	ld	a, -4 (ix)
+      000116 95               [ 4]  271 	sub	a, l
+      000117 DD 7E FD         [19]  272 	ld	a, -3 (ix)
+      00011A 9C               [ 4]  273 	sbc	a, h
+      00011B 30 30            [12]  274 	jr	NC, 00108$
+                                    275 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:41: memcpy(line, data + y * 20, 20);
+      00011D DD 6E FA         [19]  276 	ld	l, -6 (ix)
+                                    277 ;	spillPairReg hl
+                                    278 ;	spillPairReg hl
+      000120 DD 66 FB         [19]  279 	ld	h, -5 (ix)
+                                    280 ;	spillPairReg hl
+                                    281 ;	spillPairReg hl
+      000123 19               [11]  282 	add	hl, de
+      000124 C5               [11]  283 	push	bc
+      000125 EB               [ 4]  284 	ex	de, hl
+      000126 21 04 00         [10]  285 	ld	hl, #4
+      000129 39               [11]  286 	add	hl, sp
+      00012A EB               [ 4]  287 	ex	de, hl
+      00012B 01 14 00         [10]  288 	ld	bc, #0x0014
+      00012E ED B0            [21]  289 	ldir
+      000130 C1               [10]  290 	pop	bc
+                                    291 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:42: gfx_tilemap_load(ctx, line, 20, 0, 0, y);  /* layer 0 */
+      000131 C5               [11]  292 	push	bc
+      000132 C5               [11]  293 	push	bc
+      000133 33               [ 6]  294 	inc	sp
+      000134 AF               [ 4]  295 	xor	a, a
+      000135 F5               [11]  296 	push	af
+      000136 33               [ 6]  297 	inc	sp
+      000137 21 14 00         [10]  298 	ld	hl, #0x14
+      00013A E5               [11]  299 	push	hl
+      00013B 21 08 00         [10]  300 	ld	hl, #8
+      00013E 39               [11]  301 	add	hl, sp
+      00013F EB               [ 4]  302 	ex	de, hl
+      000140 DD 6E FE         [19]  303 	ld	l, -2 (ix)
+                                    304 ;	spillPairReg hl
+                                    305 ;	spillPairReg hl
+      000143 DD 66 FF         [19]  306 	ld	h, -1 (ix)
+                                    307 ;	spillPairReg hl
+                                    308 ;	spillPairReg hl
+      000146 CDr00r00         [17]  309 	call	_gfx_tilemap_load
+      000149 C1               [10]  310 	pop	bc
+                                    311 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:40: for (y = 0; y < 12 && y * 20 < title_map.size; y++) {
+      00014A 04               [ 4]  312 	inc	b
+      00014B 18 AD            [12]  313 	jr	00115$
+      00014D                        314 00108$:
+                                    315 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:46: memset(line, 0, 20);
+      00014D 21 02 00         [10]  316 	ld	hl, #2
+      000150 39               [11]  317 	add	hl, sp
+      000151 06 14            [ 7]  318 	ld	b, #0x14
+      000153                        319 00205$:
+      000153 36 00            [10]  320 	ld	(hl), #0x00
+      000155 23               [ 6]  321 	inc	hl
+      000156 10 FB            [13]  322 	djnz	00205$
+                                    323 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:47: for (y = 12; y < 15; y++) {
+      000158 DD 36 FD 0C      [19]  324 	ld	-3 (ix), #0x0c
+      00015C                        325 00117$:
+                                    326 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:48: gfx_tilemap_load(ctx, line, 20, 0, 0, y);  /* layer 0 */
+      00015C DD 66 FD         [19]  327 	ld	h, -3 (ix)
+      00015F 2E 00            [ 7]  328 	ld	l, #0x00
+      000161 E5               [11]  329 	push	hl
+      000162 21 14 00         [10]  330 	ld	hl, #0x14
+      000165 E5               [11]  331 	push	hl
+      000166 21 06 00         [10]  332 	ld	hl, #6
+      000169 39               [11]  333 	add	hl, sp
+      00016A EB               [ 4]  334 	ex	de, hl
+      00016B DD 6E FE         [19]  335 	ld	l, -2 (ix)
+                                    336 ;	spillPairReg hl
+                                    337 ;	spillPairReg hl
+      00016E DD 66 FF         [19]  338 	ld	h, -1 (ix)
+                                    339 ;	spillPairReg hl
+                                    340 ;	spillPairReg hl
+      000171 CDr00r00         [17]  341 	call	_gfx_tilemap_load
+                                    342 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:47: for (y = 12; y < 15; y++) {
+      000174 DD 34 FD         [23]  343 	inc	-3 (ix)
+      000177 DD 7E FD         [19]  344 	ld	a, -3 (ix)
+      00017A D6 0F            [ 7]  345 	sub	a, #0x0f
+      00017C 38 DE            [12]  346 	jr	C, 00117$
+      00017E                        347 00111$:
+                                    348 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:53: memset(line, 0, 20);
+      00017E 21 02 00         [10]  349 	ld	hl, #2
+      000181 39               [11]  350 	add	hl, sp
+      000182 06 14            [ 7]  351 	ld	b, #0x14
+      000184                        352 00207$:
+      000184 36 00            [10]  353 	ld	(hl), #0x00
+      000186 23               [ 6]  354 	inc	hl
+      000187 10 FB            [13]  355 	djnz	00207$
+                                    356 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:54: for (y = 0; y < 15; y++) {
+      000189 DD 36 FD 00      [19]  357 	ld	-3 (ix), #0x00
+      00018D                        358 00119$:
+                                    359 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:55: gfx_tilemap_load(ctx, line, 20, 1, 0, y);  /* layer 1 */
+      00018D DD 7E FD         [19]  360 	ld	a, -3 (ix)
+      000190 F5               [11]  361 	push	af
+      000191 33               [ 6]  362 	inc	sp
+      000192 AF               [ 4]  363 	xor	a, a
+      000193 67               [ 4]  364 	ld	h, a
+      000194 2E 01            [ 7]  365 	ld	l, #0x01
+      000196 E5               [11]  366 	push	hl
+      000197 3E 14            [ 7]  367 	ld	a, #0x14
+      000199 F5               [11]  368 	push	af
+      00019A 33               [ 6]  369 	inc	sp
+      00019B 21 06 00         [10]  370 	ld	hl, #6
+      00019E 39               [11]  371 	add	hl, sp
+      00019F EB               [ 4]  372 	ex	de, hl
+      0001A0 DD 6E FE         [19]  373 	ld	l, -2 (ix)
+                                    374 ;	spillPairReg hl
+                                    375 ;	spillPairReg hl
+      0001A3 DD 66 FF         [19]  376 	ld	h, -1 (ix)
+                                    377 ;	spillPairReg hl
+                                    378 ;	spillPairReg hl
+      0001A6 CDr00r00         [17]  379 	call	_gfx_tilemap_load
+                                    380 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:54: for (y = 0; y < 15; y++) {
+      0001A9 DD 34 FD         [23]  381 	inc	-3 (ix)
+      0001AC DD 7E FD         [19]  382 	ld	a, -3 (ix)
+      0001AF D6 0F            [ 7]  383 	sub	a, #0x0f
+      0001B1 38 DA            [12]  384 	jr	C, 00119$
+                                    385 ;/home/ed/work/zeal-eaglenest/zeal/src/render.c:57: }
+      0001B3 DD F9            [10]  386 	ld	sp, ix
+      0001B5 DD E1            [14]  387 	pop	ix
+      0001B7 C9               [10]  388 	ret
+                                    389 	.area _TEXT
+                                    390 	.area _INITIALIZER
+                                    391 	.area _CABS (ABS)
